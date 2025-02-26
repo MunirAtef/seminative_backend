@@ -1,0 +1,37 @@
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURVNU1URTJNRGsxT1E9PWNtZHJNZz09IiwiaWF0IjoxNzQwNTkxMTYwLCJleHAiOjE3NDA1OTQ3NjB9.7NmHj9qSfQsE4zVrOk6S3tGTpQk4NIhJyW5sxzRfZSg
+@baseUrl = http://localhost:3000/store
+
+GET {{baseUrl}}/search_suggestions?term=
+Authorization: Bearer {{accessToken}}
+
+###
+
+GET {{baseUrl}}/search?term=will_be_shown
+Authorization: Bearer {{accessToken}}
+
+###
+
+
+GET {{baseUrl}}/app/67becd0bed355017e8b5bd46
+Authorization: Bearer {{accessToken}}
+
+###
+
+GET {{baseUrl}}/app/67becd0bed355017e8b5bd46/reviews?identifier=1740575781671&limit=20
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
+
+POST {{baseUrl}}/app/67becd0bed355017e8b5bd46/reviews
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "content": "Hello this is a second review on chatgpt app.. good",
+  "rate": 5
+}
+
+###
+

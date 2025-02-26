@@ -1,0 +1,40 @@
+@baseUrl=http://localhost:3000/auth
+@lastAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURVNE5qY3dNVFkzTUE9PU16VmxjUT09IiwiaWF0IjoxNzQwNTg2NzAxLCJleHAiOjE3NDA1OTAzMDF9.oascBxgjqBstkyupHc4595S0q5jV6H1obJar0_h9Ys4
+@lastRefreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURVNE5qY3dNVFkzTUE9PU16VmxjUT09IiwiaWF0IjoxNzQwNTg2NzAxLCJleHAiOjE3NzIxNDA3MDF9.ylkz3NoSLhFlU5c13XPuX6Y5N1Q-6ood_BzpHe7PdmM
+
+###
+
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "munir_the_third@gmail.com",
+  "password": "12345678",
+  "device": "AcBc"
+}
+
+###
+
+POST {{baseUrl}}/signup
+Content-Type: application/json
+
+{
+  "name": "Munir The Forth",
+  "email": "munir_the_forth@gmail.com",
+  "password": "12345678",
+  "device": "AcBc"
+}
+
+
+###
+
+POST {{baseUrl}}/refresh-token
+Content-Type: application/json
+
+{
+    "refreshToken":  "{{lastRefreshToken}}",
+    "expiredAccessToken": "{{lastAccessToken}}"
+}
+
+###
+
