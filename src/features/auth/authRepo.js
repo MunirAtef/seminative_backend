@@ -27,12 +27,12 @@ const authRepo = {
 
         // Insert into MongoDB
         const result = await usersCollection.insertOne(user);
-        user.createdAt = now
-        user.lastLoginAt = now
-        console.log(result);
+        user.createdAt = now.toNumber();
+        user.lastLoginAt = now.toNumber();
+        console.log(user);
+
         if (result.insertedId) {
             const formattedUser = this.toUserResponse(user)
-            formattedUser.createdAt = now;
             return responses.created(formattedUser);
         } else {
             return responses.serverError();
