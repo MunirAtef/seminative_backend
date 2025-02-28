@@ -1,0 +1,7 @@
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURZek5UTTJNelkzTWc9PU9XOXFNUT09IiwiaWF0IjoxNzQwNjM1MzYzLCJleHAiOjIxMDA2MzUzNjN9.HgSX2_BdEHOPYf9bhA6iihgjwxKxaOFx5EiGSCp8wiY
+@baseUrl = http://localhost:3000/publisher
+
+
+GET {{baseUrl}}/67bec07fd3a33021ff00a3b3
+Authorization: Bearer {{accessToken}}
+

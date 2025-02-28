@@ -9,6 +9,7 @@ const axios = require('axios')
 
 const authRouter = require('./src/features/auth/authRoute');
 const storeRouter = require('./src/features/store/storeRoute');
+const publisherRouter = require('./src/features/publisher/publisherRoute');
 
 const authMiddleware = require('./src/utils/authMiddleware');
 
@@ -29,12 +30,13 @@ app.get('/ping', async (req, res) => {
     setTimeout(async () => {
         console.log('Forwarding request from Main to Secondary');
         await axios.get('https://alarm-service-k9me.onrender.com/ping').catch(err => console.error('Error:', err.message));
-    }, 30000);
+    }, 180000);  // 3 minutes
 });
 
 
 app.use(authMiddleware);
 app.use('/store', storeRouter);
+app.use('/publisher', publisherRouter);
 
 mongodbConnect().then(_ => {
     console.log('Connected to mongodb server...');
