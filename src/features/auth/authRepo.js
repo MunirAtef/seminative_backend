@@ -6,7 +6,7 @@ const {ObjectId} = require("mongodb");
 
 
 const authRepo = {
-    async signup({name, email, password, device}) {
+    async signup({name, email, password, device, dateOfBirth}) {
         // Check if user already exists
         const existingUser = await usersCollection.findOne({email});
         if (existingUser) return responses.conflict("Email already exists.");
@@ -27,6 +27,8 @@ const authRepo = {
 
         // Insert into MongoDB
         const result = await usersCollection.insertOne(user);
+        user.createdAt = now
+        user.lastLoginAt = now
         console.log(result);
         if (result.insertedId) {
             const formattedUser = this.toUserResponse(user)

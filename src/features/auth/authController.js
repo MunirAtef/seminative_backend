@@ -39,8 +39,8 @@ const authController = {
     // Signup Controller
     signup: async (req, res) => {
         try {
-            const {name, email, password, device} = req.body;
-            const result = await authRepo.signup({name, email, password, device});
+            // const {name, email, password, device, dateOfBirth} = req.body;
+            const result = await authRepo.signup(req.body);
 
             if (!result.success) return res.status(result.status).json(result);
 
