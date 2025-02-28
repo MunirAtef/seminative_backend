@@ -1,4 +1,4 @@
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURVNU1URTJNRGsxT1E9PWNtZHJNZz09IiwiaWF0IjoxNzQwNTkxMTYwLCJleHAiOjE3NDA1OTQ3NjB9.7NmHj9qSfQsE4zVrOk6S3tGTpQk4NIhJyW5sxzRfZSg
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURZek5UTTJNelkzTWc9PU9XOXFNUT09IiwiaWF0IjoxNzQwNjM1MzYzLCJleHAiOjIxMDA2MzUzNjN9.HgSX2_BdEHOPYf9bhA6iihgjwxKxaOFx5EiGSCp8wiY
 @baseUrl = http://localhost:3000/store
 
 GET {{baseUrl}}/search_suggestions?term=
@@ -6,7 +6,7 @@ Authorization: Bearer {{accessToken}}
 
 ###
 
-GET {{baseUrl}}/search?term=will_be_shown
+GET {{baseUrl}}/search?term=
 Authorization: Bearer {{accessToken}}
 
 ###
@@ -17,7 +17,7 @@ Authorization: Bearer {{accessToken}}
 
 ###
 
-GET {{baseUrl}}/app/67becd0bed355017e8b5bd46/reviews?identifier=1740575781671&limit=20
+GET {{baseUrl}}/app/67becd0bed355017e8b5bd47/reviews?identifier=0&limit=1
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
@@ -29,8 +29,8 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "content": "Hello this is a second review on chatgpt app.. good",
-  "rate": 5
+  "content": "Hello this is a test review app.. good",
+  "rate": 4
 }
 
 ###

@@ -23,7 +23,7 @@ const authController = {
         console.log("tokenId", tokenId);
 
         const accessToken = jwt.sign({id: userId, tokenId}, ACCESS_TOKEN_SECRET, {
-            expiresIn: '1h',
+            expiresIn: '100000h',
         });
 
         const refreshToken = jwt.sign({id: userId, tokenId}, REFRESH_TOKEN_SECRET, {

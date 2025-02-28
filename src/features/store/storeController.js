@@ -34,8 +34,8 @@ const storeController = {
         const appId = req.params["appId"];
 
         console.log(appId, identifier, limit);
-        const result = await storeRepo.getReviews({ appId, identifier, limit });
-        console.log(result);
+
+        const result = await storeRepo.getReviews({ appId, identifier, limit: parseInt(limit) || 10 });
         res.status(result.status).json(result);
     },
 
@@ -44,7 +44,10 @@ const storeController = {
         const { content, rate } = req.body;
         const appId = req.params["appId"];
         const userId = req.userId
-        const result = await storeRepo.postReview({userId, appId, content, rate});
+
+        console.log(userId, content, rate);
+
+        const result = await storeRepo.postReview({userId, appId, content, rate: parseInt(rate)});
         res.status(result.status).json(result);
     },
 

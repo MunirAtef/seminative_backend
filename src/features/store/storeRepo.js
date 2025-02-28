@@ -41,7 +41,7 @@ const storeRepo = {
     search: async ({userId, term}) => {
         // const apps = await appsCollection.find({ name: { $regex: term, $options: "i" } }).toArray();
 
-        await userInteractionsCollection.insertOne({
+        if (term !== "") await userInteractionsCollection.insertOne({
             userId: new ObjectId(userId),
             type: interactionTypes.SEARCH,
             createdAt: dateTimeService.now(),
@@ -133,7 +133,7 @@ const storeRepo = {
             {
                 $match: {
                     appId: {$eq: new ObjectId(appId)},
-                    createdAt: {$gt: identifierLong},
+                    createdAt: {$lt: identifierLong},
                 }
             },
             {
@@ -164,9 +164,10 @@ const storeRepo = {
                         isOrg: "$publisher.isOrg"
                     }
                 }
-            }
+            },
+            { $sort: { createdAt: -1 } },  // Sort descending
+            { $limit: limit }
         ])
-            // .limit(limit)
             .toArray();
 
         console.log(reviews);
