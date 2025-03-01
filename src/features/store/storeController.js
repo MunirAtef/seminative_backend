@@ -1,4 +1,3 @@
-
 const storeRepo = require("./storeRepo")
 
 // update code to use
@@ -66,7 +65,34 @@ const storeController = {
         res.setHeader("Content-Disposition", "attachment; filename=dummy.apk");
         res.sendFile("../../../public/index.html");
         // res.send("Dummy file content"); // In a real scenario, use res.sendFile(path_to_file)
-    }
+    },
+
+
+    // history handlers
+    getHistory: async (req, res) => {
+        const userId = req.userId;
+        const {identifier, limit} = req.query;
+        const  historyType = req.params.type.toUpperCase();
+
+        const result = await storeRepo.getHistory({userId, historyType, identifier, limit: parseInt(limit) || 20});
+        res.status(result.status).json(result);
+    },
+
+    deleteHistoryItem: async (req, res) => {
+        const userId = req.userId;
+        const itemId = req.params.id;
+        const  historyType = req.params.type.toUpperCase();
+
+        const result = await storeRepo.deleteHistoryItem({userId, historyType, itemId});
+        res.status(result.status).json(result);
+    },
+    deleteHistory: async (req, res) => {
+        const userId = req.userId;
+        const  historyType = req.params.type.toUpperCase();
+
+        const result = await storeRepo.deleteHistory({userId, historyType});
+        res.status(result.status).json(result);
+    },
 }
 
 module.exports = storeController;

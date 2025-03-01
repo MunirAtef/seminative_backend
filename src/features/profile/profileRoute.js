@@ -1,9 +1,20 @@
-
-// authRoutes.js
 const express = require('express');
-const profileController = require('./profileController');
+const controller = require('./profileController');
+const {upload} = require("../multerFileUploader");
+const authMiddleware = require('../../utils/authMiddleware');
+
 const router = express.Router();
 
-// router.put('/profile/:userId', authController.updateProfile);
+router.get("/", authMiddleware, controller.getProfile);
+router.put("/name", authMiddleware, controller.updateName);
+
+// without auth
+router.get("/picture/:userId/:filename", controller.getProfilePicture);
+router.put("/picture", authMiddleware, upload.single("file"), controller.updateProfilePicture);
+router.delete("/picture", authMiddleware, controller.deleteProfilePicture);
+
+router.put("/password", authMiddleware, controller.updatePassword);
+
 
 module.exports = router;
+

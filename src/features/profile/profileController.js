@@ -1,79 +1,59 @@
+const profileRepo = require('./profileRepo')
+const {responses} = require("../responses");
+const path = require("path");
+const fs = require("fs");
 
-const authController = {
-    signup: async (req, res) => {
-        const {name, email, password, device} = req.body;
+const projectBaseDir = process.cwd();
 
-        // Check if user already exists
-        const userExists = users.find((user) => user.email === email);
-        if (userExists) {
-            return res.status(400).json({message: 'User already exists'});
-        }
-
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create user object
-        const now = Date.now();
-        const id = now.toString();
-        const user = {
-            id,
-            name,
-            email,
-            password: hashedPassword,
-            device,
-            createdAt: now,
-            lastLoginAt: now,
-        };
-
-        // Save user to memory
-        users.push(user);
-
-        // Generate JWT token
-        const token = authController.generateToken(user);
-
-        // res.status(201).json({message: 'User created successfully', token});
-        res.status(201).json({
-            success: true,
-            statusCode: 201,
-            data: {
-                token,
-                profile: user,
-            }
-        });
+const profileController = {
+    getProfile: async (req, res) => {
+        const userId = req.userId;
+        const result = await profileRepo.getProfile({userId});
+        res.status(result.status).json(result);
     },
 
+    updateName: async (req, res) => {
+        const userId = req.userId;
+        const {name} = req.body;
+        const result = await profileRepo.updateName({userId, name});
+        res.status(result.status).json(result);
+    },
 
-    login: async (req, res) => {
-        const {email, password, device} = req.body;
+    getProfilePicture: async (req, res) => {
+        const { userId, filename } = req.params;
+        const filePath = path.resolve(projectBaseDir, `uploads/users/${userId}/public/${filename}`);
 
-        // Find user by email
-        const user = users.find((user) => user.email === email);
-        if (!user) {
-            return res.status(400).json({message: 'Invalid email or password'});
+        if (fs.existsSync(filePath)) {
+            res.sendFile(filePath);
+        } else {
+            res.status(404).json({ error: "File not found" });
         }
+    },
 
-        // Compare passwords
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(400).json({message: 'Invalid email or password'});
+    updateProfilePicture: async (req, res) => {
+        const userId = req.userId;
+        if (!req.file) {
+            const result = responses.notFound("No file uploaded.");
+            return res.status(result.status).send(result);
         }
+        const filename = req.file.filename;
+        const savingResult = await profileRepo.changeProfilePicture({userId, filename});
+        res.status(savingResult.status).send(savingResult);
+    },
 
-        // Update last login
-        user.lastLogin = Date.now();
+    deleteProfilePicture: async (req, res) => {
+        const userId = req.userId;
+        const savingResult = await profileRepo.changeProfilePicture({userId, filename: null});
+        res.status(savingResult.status).send(savingResult);
+    },
 
-        // Generate JWT token
-        const token = authController.generateToken(user);
-
-        res.status(200).json({
-            success: true,
-            statusCode: 200,
-            data: {
-                token,
-                profile: user,
-            }
-        });
-    }
+    updatePassword: async (req, res) => {
+        const userId = req.userId;
+        const {oldPassword, newPassword} = req.body;
+        const result = await profileRepo.updatePassword({userId, oldPassword, newPassword});
+        res.status(result.status).json(result);
+    },
 };
 
 
-module.exports = authController;
+module.exports = profileController;

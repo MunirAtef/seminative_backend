@@ -16,5 +16,10 @@ router.put("/app/:appId/reviews/:reviewId", controller.updateReview);
 
 router.get("/app/:appId/download", controller.downloadApp);
 
+// history
+router.get("/history/:type", controller.getHistory);
+router.delete("/history/:type/:id", controller.deleteHistoryItem);
+router.delete("/history/:type", controller.deleteHistory);
+
 
 module.exports = router;

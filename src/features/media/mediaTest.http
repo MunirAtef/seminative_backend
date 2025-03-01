@@ -1,10 +1,6 @@
 @accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURZek5UTTJNelkzTWc9PU9XOXFNUT09IiwiaWF0IjoxNzQwNjM1MzYzLCJleHAiOjIxMDA2MzUzNjN9.HgSX2_BdEHOPYf9bhA6iihgjwxKxaOFx5EiGSCp8wiY
-@baseUrl = http://localhost:3000/publisher
+@baseUrl = http://localhost:3000/media
 
 
-GET {{baseUrl}}/67bec07fd3a33021ff00a3b3
-Authorization: Bearer {{accessToken}}
+GET {{baseUrl}}/profile/67bf04099fad689bebc2bdb8/1740842311076.jpg
 
-###
-
-POST localhost:3000/wake-up-man

@@ -210,6 +210,108 @@ const storeRepo = {
     // GET download file (returns dummy file)
     downloadApp: ({userId, appId}) => {
         // res.send("Dummy file content"); // In a real scenario, use res.sendFile(path_to_file)
+    },
+
+
+    // history handlers
+    getHistory: async ({userId, historyType, identifier, limit}) => {
+        const identifierLong = Long.fromNumber(identifier);
+
+        if (historyType === interactionTypes.SEARCH) {
+            const historyItems = await userInteractionsCollection
+                .find({
+                    userId: new ObjectId(userId),
+                    type: interactionTypes.SEARCH,
+                    createdAt: {$lt: identifierLong},
+                })
+                .limit(limit)
+                .toArray()
+
+            return responses.ok(historyItems.map((historyItem) => {
+                const item = {...historyItem};
+                item.id = item._id.toString();
+                delete item._id;
+                delete item.userId;
+                return item;
+            }));
+        }
+
+        const historyItems = await userInteractionsCollection.aggregate([
+            {
+                $match: {
+                    userId: {$eq: new ObjectId(userId)},
+                    createdAt: {$lt: identifierLong},
+                }
+            },
+            {
+                $lookup: {
+                    from: "apps", // Join with apps collection
+                    localField: "appId",
+                    foreignField: "_id",
+                    as: "app"
+                }
+            },
+            {
+                $unwind: "$app" // {path: "$app", preserveNullAndEmptyArrays: true}
+            },
+            {
+                $project: {
+                    _id: 0, // Remove MongoDB _id
+                    id: {$toString: "$_id"}, // Convert _id to string and rename it to "id"
+                    type: 1,
+                    createdAt: 1,
+                    metadata: 1,
+                    app: {
+                        id: {$toString: "$app._id"},
+                        name: "$app.name",
+                        iconUrl: "$app.iconUrl"
+                    }
+                }
+            },
+            {$sort: {createdAt: -1}},
+            {$limit: limit}
+        ])
+            .toArray();
+
+
+        // {
+        //     "_id": "67c1b0b466f4ea9471e02073",
+        //     "userId": "67bf04099fad689bebc2bdb8",
+        //     "type": "SEARCH",
+        //     "createdAt": 1740746932985,
+        //     "metadata": {
+        //     "searchTerm": "chat"
+        // }
+        // },
+        //
+        // {
+        //     "_id": "67c1b0bb66f4ea9471e02074",
+        //     "userId": "67bf04099fad689bebc2bdb8",
+        //     "appId": "67becd0bed355017e8b5bd46",
+        //     "type": "VIEW",
+        //     "createdAt": 1740746939389
+        // },
+
+        return responses.ok(historyItems);
+    },
+
+    deleteHistoryItem: async ({userId, historyType, itemId}) => {
+        const result = await userInteractionsCollection.deleteOne({
+            _id: new ObjectId(itemId),
+            type: historyType,
+            userId: new ObjectId(userId)
+        });
+        if (result.deletedCount === 0) return responses.notFound("History item not found.");
+        return responses.ok();
+    },
+
+    deleteHistory: async ({userId, historyType}) => {
+        const result = await userInteractionsCollection.deleteMany({
+            userId: new ObjectId(userId),
+            type: historyType,
+        });
+        console.log(`history deleted items count: ${result.deletedCount}`);
+        return responses.ok();
     }
 }
 

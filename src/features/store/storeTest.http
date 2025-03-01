@@ -35,3 +35,15 @@ Authorization: Bearer {{accessToken}}
 
 ###
 
+
+### Get History
+GET {{baseUrl}}/history/view?identifier=9999999999999&limit=10 HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### Delete Specific History Item
+DELETE {{baseUrl}}/history/view/67c1b0d666f4ea9471e02075 HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### Delete All History
+DELETE {{baseUrl}}/history/search HTTP/1.1
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:3000/profile
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YmYwNDA5OWZhZDY4OWJlYmMyYmRiOCIsInRva2VuSWQiOiJNVGMwTURZek5UTTJNelkzTWc9PU9XOXFNUT09IiwiaWF0IjoxNzQwNjM1MzYzLCJleHAiOjIxMDA2MzUzNjN9.HgSX2_BdEHOPYf9bhA6iihgjwxKxaOFx5EiGSCp8wiY
+
+
+### Get Profile
+GET {{baseUrl}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+
+### Update Name
+PUT {{baseUrl}}/name HTTP/1.1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Munir Name"
+}
+
+
+### Get Profile Picture
+GET {{baseUrl}}/picture/67bf04099fad689bebc2bdb8/1740842311076.jpg HTTP/1.1
+
+
+### Update Profile Picture
+PUT {{baseUrl}}/picture HTTP/1.1
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="munir.jpg"
+Content-Type: image/jpeg
+
+< /home/munir/Desktop/munir.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+### Delete Profile Picture
+DELETE {{baseUrl}}/picture HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### Update Password
+PUT {{baseUrl}}/password HTTP/1.1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "oldPassword": "00000000",
+  "newPassword": "12345678"
+}

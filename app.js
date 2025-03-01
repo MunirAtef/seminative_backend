@@ -8,6 +8,8 @@ const {mongodbConnect} = require('./src/features/connection.js');
 const axios = require('axios')
 
 const authRouter = require('./src/features/auth/authRoute');
+const mediaRouter = require('./src/features/media/mediaRoute');
+const profileRouter = require('./src/features/profile/profileRoute');
 const storeRouter = require('./src/features/store/storeRoute');
 const publisherRouter = require('./src/features/publisher/publisherRoute');
 
@@ -21,7 +23,6 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/auth', authRouter);
 
 // for ping service
 app.get('/ping', async (req, res) => {
@@ -34,6 +35,9 @@ app.get('/ping', async (req, res) => {
 });
 
 
+app.use('/auth', authRouter);
+app.use('/media', mediaRouter);
+app.use('/profile', profileRouter);
 app.use(authMiddleware);
 app.use('/store', storeRouter);
 app.use('/publisher', publisherRouter);
