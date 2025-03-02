@@ -32,5 +32,12 @@ const appReviewsCollection = mongoDb.collection("app_reviews");
 const userInteractionsCollection = mongoDb.collection("user_interactions");
 
 
-module.exports = {mongoClient, mongodbConnect, usersCollection, appsCollection, userInteractionsCollection, appReviewsCollection };
+module.exports = {
+    mongoClient,
+    mongodbConnect,
+    usersCollection,
+    appsCollection,
+    userInteractionsCollection,
+    appReviewsCollection
+};
 
