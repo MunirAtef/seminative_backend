@@ -38,6 +38,7 @@ const profileController = {
         }
         const filename = req.file.filename;
         const savingResult = await profileRepo.changeProfilePicture({userId, filename});
+        console.log(savingResult);
         res.status(savingResult.status).send(savingResult);
     },
 
