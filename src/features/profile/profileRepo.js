@@ -33,7 +33,7 @@ const profileRepo = {
             {$set: {imageUrl: filename}}
         );
         if (result.matchedCount === 0) return responses.notFound("User not found.");
-        return responses.ok(filename);
+        return responses.ok({filename});
     },
 
     updatePassword: async ({userId, oldPassword, newPassword}) => {

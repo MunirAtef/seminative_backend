@@ -31,7 +31,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="munir.jpg"
+Content-Disposition: form-data; name="file"; filename="munir"
 Content-Type: image/jpeg
 
 < /home/munir/Desktop/munir.jpg
