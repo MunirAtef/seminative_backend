@@ -10,7 +10,7 @@ router.put("/name", authMiddleware, controller.updateName);
 
 // without auth
 router.get("/picture/:userId/:filename", controller.getProfilePicture);
-router.put("/picture", authMiddleware, upload.single("file"), controller.updateProfilePicture);
+router.post("/picture", authMiddleware, upload.single("file"), controller.updateProfilePicture);
 router.delete("/picture", authMiddleware, controller.deleteProfilePicture);
 
 router.put("/password", authMiddleware, controller.updatePassword);
