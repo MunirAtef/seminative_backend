@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get("/search_suggestions", controller.searchSuggestions);
 router.get("/search", controller.search);
+
+router.post("/app", controller.postApp);
 router.get("/app/:appId", controller.appDetails);
 
 router.get("/app/:appId/reviews", controller.getReviews);

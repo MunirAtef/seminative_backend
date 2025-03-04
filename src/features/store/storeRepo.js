@@ -59,19 +59,19 @@ const storeRepo = {
             },
             {
                 $lookup: {
-                    from: "users", // Join with users collection
-                    localField: "creatorId", // Field in apps collection
-                    foreignField: "_id", // Field in users collection
-                    as: "creatorData" // Result array field
+                    from: "users",
+                    localField: "creatorId",
+                    foreignField: "_id",
+                    as: "creatorData"
                 }
             },
             {
-                $unwind: "$creatorData" // Convert array to object (if creator exists)
+                $unwind: "$creatorData"
             },
             {
                 $project: {
-                    _id: 0, // Remove MongoDB _id
-                    id: {$toString: "$_id"}, // Convert _id to string and rename it to "id"
+                    _id: 0,
+                    id: {$toString: "$_id"},
                     name: 1,
                     iconUrl: 1,
                     lastVersion: 1,
@@ -138,20 +138,20 @@ const storeRepo = {
             },
             {
                 $lookup: {
-                    from: "users", // Join with users collection
-                    localField: "userId", // Field in apps collection
-                    foreignField: "_id", // Field in getReviews collection
-                    as: "publisher" // Result array field
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "publisher"
                 }
             },
             {
-                $unwind: "$publisher" // Convert array to object (if creator exists)
+                $unwind: "$publisher"
             },
             {
                 $project: {
-                    _id: 0, // Remove MongoDB _id
+                    _id: 0,
                     // appId: 0,
-                    id: {$toString: "$_id"}, // Convert _id to string and rename it to "id"
+                    id: {$toString: "$_id"},
                     content: 1,
                     rate: 1,
                     createdAt: 1,

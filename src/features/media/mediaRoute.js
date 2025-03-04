@@ -17,3 +17,18 @@ router.get("/profile/:userId/:filename", async (req, res) => {
 });
 
 module.exports = router;
+
+/*
+* uploads/
+*   apps/
+*       {appId}/
+*           app_src_{version}.sna (zipped)
+*           icon_128.png
+*           icon_64.png
+*   users/
+*       {userId}/
+*           public/
+*               profile_picture.png
+*           private/
+*
+* */
