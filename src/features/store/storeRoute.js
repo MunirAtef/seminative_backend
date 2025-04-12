@@ -16,7 +16,7 @@ router.post("/app/:appId/reviews", controller.postReview);
 router.delete("/app/:appId/reviews/:reviewId", controller.deleteReview);
 router.put("/app/:appId/reviews/:reviewId", controller.updateReview);
 
-router.get("/app/:appId/download", controller.downloadApp);
+router.get("/app/:appId/:version", controller.downloadApp);
 
 // history
 router.get("/history/:type", controller.getHistory);

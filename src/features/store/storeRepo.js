@@ -200,18 +200,100 @@ const storeRepo = {
     },
 
     // DELETE a review
-    deleteReview: ({userId, appId, reviewId}) => {
+    deleteReview: async ({userId, appId, reviewId}) => {
+        const review = await appReviewsCollection.findOne({
+            _id: new ObjectId(reviewId),
+            userId: new ObjectId(userId),
+            appId: new ObjectId(appId)
+        });
+
+        if (!review) return responses.notFound("Review not found.");
+
+        const index = review.rate - 1;
+
+        const deleteResult = await appReviewsCollection.deleteOne({
+            _id: new ObjectId(reviewId),
+            userId: new ObjectId(userId),
+            appId: new ObjectId(appId)
+        });
+
+        if (deleteResult.deletedCount === 0)
+            return responses.serverError("Unable to delete review.");
+
+        await appsCollection.updateOne(
+            {_id: new ObjectId(appId)},
+            {$inc: {[`ratings.${index}`]: -1}}
+        );
+
+        return responses.ok();
     },
 
     // PUT (edit) a review
-    updateReview: ({userId, appId, reviewId, content, rate}) => {
+    updateReview: async ({userId, appId, reviewId, content, rate}) => {
+        const review = await appReviewsCollection.findOne({
+            _id: new ObjectId(reviewId),
+            userId: new ObjectId(userId),
+            appId: new ObjectId(appId)
+        });
+
+        if (!review) return responses.notFound("Review not found.");
+
+        const oldIndex = review.rate - 1;
+        const newIndex = rate - 1;
+        if (newIndex < 0 || newIndex > 4) return responses.badRequest("Invalid rate sent.");
+
+        const result = await appReviewsCollection.updateOne(
+            {
+                _id: new ObjectId(reviewId),
+                userId: new ObjectId(userId),
+                appId: new ObjectId(appId)
+            },
+            {
+                $set: {
+                    content,
+                    rate,
+                    updatedAt: dateTimeService.now()
+                }
+            }
+        );
+
+        if (result.modifiedCount === 0)
+            return responses.serverError("Unable to update review.");
+
+        if (oldIndex !== newIndex) {
+            await appsCollection.updateOne(
+                {_id: new ObjectId(appId)},
+                {
+                    $inc: {
+                        [`ratings.${oldIndex}`]: -1,
+                        [`ratings.${newIndex}`]: 1
+                    }
+                }
+            );
+        }
+
+        return responses.ok();
     },
 
     // GET download file (returns dummy file)
-    downloadApp: ({userId, appId}) => {
-        // res.send("Dummy file content"); // In a real scenario, use res.sendFile(path_to_file)
-    },
+    downloadApp: async ({userId, appId, version}) => {
+        // Log the download
+        await userInteractionsCollection.insertOne({
+            userId: new ObjectId(userId),
+            appId: new ObjectId(appId),
+            type: interactionTypes.DOWNLOAD,
+            createdAt: dateTimeService.now(),
+            metadata: { version }
+        });
 
+        // Increment download count
+        await appsCollection.updateOne(
+            { _id: new ObjectId(appId) },
+            { $inc: { downloads: 1 } }
+        );
+
+        return responses.ok();
+    },
 
     // history handlers
     getHistory: async ({userId, historyType, identifier, limit}) => {
