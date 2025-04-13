@@ -24,7 +24,6 @@ const storeController = {
     },
 
 
-    // GET app details
     postApp: async (req, res) => {
         const {
             name,
@@ -94,22 +93,23 @@ const storeController = {
         res.json({success: true, message: "Review updated successfully"});
     },
 
-    // GET download file (returns dummy file)
     downloadApp: async (req, res) => {
         const filename = 'base_v2.zip';
         const userId = req.userId;
         const appId = req.params.appId;
         const version = req.params.version;
-        // const filePath = path.resolve(__dirname, 'files', filename);
-        const filePath = path.resolve(projectBaseDir, `uploads/apps/${appId}/${version}/${filename}`);
+        const filePath = path.resolve(projectBaseDir, "uploads", "apps", appId, version, filename);
         if (!fs.existsSync(filePath)) {
             const notFoundRes = responses.notFound("App not found");
             return res.status(notFoundRes.status).send(notFoundRes);
         }
 
-        // Set headers
+        const stat = fs.statSync(filePath);
+        const fileSize = stat.size;
+
         res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Length', fileSize);
 
         // Create read stream and pipe to response
         const fileStream = fs.createReadStream(filePath);
